@@ -34,7 +34,7 @@ class OpenVoiceBaseClass(object):
 
     def load_ckpt(self, ckpt_path):
         checkpoint_dict = torch.load(ckpt_path, map_location=torch.device(self.device))
-        a, b = self.model.load_state_dict(checkpoint_dict['model'], strict=False)
+        a, b = self.model.load_state_dict(checkpoint_dict['model'], strict=False)    # 加载神经网络参数
         print("Loaded checkpoint '{}'".format(ckpt_path))
         print('missing/unexpected keys:', a, b)
 
