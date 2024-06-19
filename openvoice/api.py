@@ -84,7 +84,7 @@ class BaseSpeakerTTS(OpenVoiceBaseClass):
             device = self.device
             speaker_id = self.hps.speakers[speaker]
             with torch.no_grad():
-                x_tst = stn_tst.unsqueeze(0).to(device)
+                x_tst = stn_tst.unsqueeze(0).to(device)        # 将张量在升一维
                 x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).to(device)
                 sid = torch.LongTensor([speaker_id]).to(device)
                 audio = self.model.infer(x_tst, x_tst_lengths, sid=sid, noise_scale=0.667, noise_scale_w=0.6,
