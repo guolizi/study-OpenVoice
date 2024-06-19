@@ -309,7 +309,7 @@ def chinese_to_ipa(text):
     text = number_to_chinese(text)
     text = chinese_to_bopomofo(text)
     text = latin_to_bopomofo(text)
-    text = bopomofo_to_ipa(text)
+    text = bopomofo_to_ipa(text)        # 现代标准汉语（普通话、国语、华语）发音的方式，国际音标。
     text = re.sub('i([aoe])', r'j\1', text)
     text = re.sub('u([aoəe])', r'w\1', text)
     text = re.sub('([sɹ]`[⁼ʰ]?)([→↓↑ ]+|$)',
