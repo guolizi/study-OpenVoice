@@ -24,7 +24,7 @@ class OpenVoiceBaseClass(object):
             len(getattr(hps, 'symbols', [])),
             hps.data.filter_length // 2 + 1,
             n_speakers=hps.data.n_speakers,
-            **hps.model,
+            **hps.model,    # 用字典修改特定参数的值
         ).to(device)
 
         model.eval()
