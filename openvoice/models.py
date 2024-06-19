@@ -33,8 +33,8 @@ class TextEncoder(nn.Module):
 		self.kernel_size = kernel_size
 		self.p_dropout = p_dropout
 
-		self.emb = nn.Embedding(n_vocab, hidden_channels)
-		nn.init.normal_(self.emb.weight, 0.0, hidden_channels**-0.5)
+		self.emb = nn.Embedding(n_vocab, hidden_channels)		# 建立词汇向量表
+		nn.init.normal_(self.emb.weight, 0.0, hidden_channels**-0.5)	# 初始化向量表，采用正太分布（normal_）的方式。emb.weight是Embedding的tensor张量
 
 		self.encoder = attentions.Encoder(
 			hidden_channels,
@@ -403,12 +403,12 @@ class SynthesizerTrn(nn.Module):
 
     def __init__(
         self,
-        n_vocab,
+        n_vocab,			# 词汇大小
         spec_channels,
         inter_channels,
-        hidden_channels,
+        hidden_channels,		# 隐藏层的输出通道数量
         filter_channels,
-        n_heads,
+        n_heads,			# 头部的数量
         n_layers,
         kernel_size,
         p_dropout,
