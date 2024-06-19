@@ -239,7 +239,11 @@ def number_to_chinese(text):
         text = text.replace(number, cn2an.an2cn(number), 1)
     return text
 
-
+'''
+注音符号（zhù yīn fú hào，ㄓㄨˋ ㄧㄣ ㄈㄨˊ ㄏㄠˋ）另称“bopomofo”，是现代汉语的标音系统之一，除了可以标注普通话，也可以用来标注其他汉语方言，例如闽南话。
+注音创立于二十世纪初（中华民国时期），虽然现今已大致被拼音取代，但在字典中还能看到。
+截至目前，注音依然是台湾的首要拼写系统。
+'''
 def chinese_to_bopomofo(text):
     text = text.replace('、', '，').replace('；', '，').replace('：', '，')
     words = jieba.lcut(text, cut_all=False)    # 对中文字符串进行分词. 参考：https://github.com/fxsjy/jieba
