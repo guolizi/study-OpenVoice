@@ -80,7 +80,7 @@ class BaseSpeakerTTS(OpenVoiceBaseClass):
         for t in texts:
             t = re.sub(r'([a-z])([A-Z])', r'\1 \2', t)
             t = f'[{mark}]{t}[{mark}]'
-            stn_tst = self.get_text(t, self.hps, False)
+            stn_tst = self.get_text(t, self.hps, False)        # 翻译成国际音标，转换成整数映射，最后转换为tensor张量
             device = self.device
             speaker_id = self.hps.speakers[speaker]
             with torch.no_grad():
