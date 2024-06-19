@@ -242,7 +242,7 @@ def number_to_chinese(text):
 
 def chinese_to_bopomofo(text):
     text = text.replace('、', '，').replace('；', '，').replace('：', '，')
-    words = jieba.lcut(text, cut_all=False)
+    words = jieba.lcut(text, cut_all=False)    # 对中文字符串进行分词. 参考：https://github.com/fxsjy/jieba
     text = ''
     for word in words:
         bopomofos = lazy_pinyin(word, BOPOMOFO)
