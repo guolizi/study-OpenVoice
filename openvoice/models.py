@@ -33,7 +33,12 @@ class TextEncoder(nn.Module):
 		self.kernel_size = kernel_size
 		self.p_dropout = p_dropout
 
-		self.emb = nn.Embedding(n_vocab, hidden_channels)		# 建立词汇向量表
+		'''	
+  			建立词汇向量表。使用词汇表id找到对应的向量。
+			如一个文本翻译后的词汇id向量是[1,50]，经过emb后，转换成[[id 1 对应的向量], [id 50 对应的向量]]。
+   			因为向量本身占一维，因此会增加一维。
+    	'''
+		self.emb = nn.Embedding(n_vocab, hidden_channels)
 		nn.init.normal_(self.emb.weight, 0.0, hidden_channels**-0.5)	# 初始化向量表，采用正太分布（normal_）的方式。emb.weight是Embedding的tensor张量
 
 		self.encoder = attentions.Encoder(
