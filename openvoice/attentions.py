@@ -207,7 +207,7 @@ class Decoder(nn.Module):
         return x
 
 
-class MultiHeadAttention(nn.Module):
+class MultiHeadAttention(nn.Module):        # 计算多头注意力
     def __init__(
         self,
         channels,
@@ -235,7 +235,7 @@ class MultiHeadAttention(nn.Module):
         self.attn = None
 
         self.k_channels = channels // n_heads
-        self.conv_q = nn.Conv1d(channels, channels, 1)
+        self.conv_q = nn.Conv1d(channels, channels, 1)        # 定义一维卷积层
         self.conv_k = nn.Conv1d(channels, channels, 1)
         self.conv_v = nn.Conv1d(channels, channels, 1)
         self.conv_o = nn.Conv1d(channels, out_channels, 1)
@@ -253,7 +253,7 @@ class MultiHeadAttention(nn.Module):
                 * rel_stddev
             )
 
-        nn.init.xavier_uniform_(self.conv_q.weight)
+        nn.init.xavier_uniform_(self.conv_q.weight)        # 将参数初始化成均匀分布
         nn.init.xavier_uniform_(self.conv_k.weight)
         nn.init.xavier_uniform_(self.conv_v.weight)
         if proximal_init:
