@@ -138,7 +138,7 @@ class StochasticDurationPredictor(nn.Module):
 			self.cond = nn.Conv1d(gin_channels, filter_channels, 1)
 
 	def forward(self, x, x_mask, w=None, g=None, reverse=False, noise_scale=1.0):
-		x = torch.detach(x)
+		x = torch.detach(x)	# 切断传播，不计算梯度？
 		x = self.pre(x)
 		if g is not None:
 			g = torch.detach(g)
