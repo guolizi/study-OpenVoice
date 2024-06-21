@@ -472,7 +472,7 @@ class SynthesizerTrn(nn.Module):
     def infer(self, x, x_lengths, sid=None, noise_scale=1, length_scale=1, noise_scale_w=1., sdp_ratio=0.2, max_len=None):
         x, m_p, logs_p, x_mask = self.enc_p(x, x_lengths)
         if self.n_speakers > 0:
-            g = self.emb_g(sid).unsqueeze(-1) # [b, h, 1]
+            g = self.emb_g(sid).unsqueeze(-1) # [1, gin_channels, 1]
         else:
             g = None
 
