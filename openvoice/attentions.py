@@ -268,7 +268,7 @@ class MultiHeadAttention(nn.Module):        # 计算多头注意力
 
         x, self.attn = self.attention(q, k, v, mask=attn_mask)
 
-        x = self.conv_o(x)
+        x = self.conv_o(x)    # [b, channels, t]
         return x
 
     def attention(self, query, key, value, mask=None):
@@ -308,7 +308,7 @@ class MultiHeadAttention(nn.Module):        # 计算多头注意力
                 scores = scores.masked_fill(block_mask == 0, -1e4)
         p_attn = F.softmax(scores, dim=-1)  # [b, n_h, t_t, t_s]
         p_attn = self.drop(p_attn)
-        output = torch.matmul(p_attn, value)
+        output = torch.matmul(p_attn, value)    # [b, n_h, t_t, d_k]
         if self.window_size is not None:
             relative_weights = self._absolute_position_to_relative_position(p_attn)
             value_relative_embeddings = self._get_relative_embeddings(
