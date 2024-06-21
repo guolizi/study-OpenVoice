@@ -53,7 +53,7 @@ class TextEncoder(nn.Module):
 	def forward(self, x, x_lengths):
 		x = self.emb(x) * math.sqrt(self.hidden_channels) # [b, t, h]	# 为什么要乘以这个，放大向量值？
 		x = torch.transpose(x, 1, -1) # [b, h, t]	# 将h和t转置，后面做卷积需要
-		x_mask = torch.unsqueeze(commons.sequence_mask(x_lengths, x.size(2)), 1).to(x.dtype)
+		x_mask = torch.unsqueeze(commons.sequence_mask(x_lengths, x.size(2)), 1).to(x.dtype)	# mask的形状是：[1,1,x_lengths]
 
 		x = self.encoder(x * x_mask, x_mask)
 		stats = self.proj(x) * x_mask
