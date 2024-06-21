@@ -112,11 +112,11 @@ class Encoder(nn.Module):
                 x = x * x_mask
             y = self.attn_layers[i](x, x, attn_mask)        # 注意力层
             y = self.drop(y)
-            x = self.norm_layers_1[i](x + y)    # 标准化
+            x = self.norm_layers_1[i](x + y)    # 标准化层
 
-            y = self.ffn_layers[i](x, x_mask)
+            y = self.ffn_layers[i](x, x_mask)    # 前馈层
             y = self.drop(y)
-            x = self.norm_layers_2[i](x + y)
+            x = self.norm_layers_2[i](x + y)    # 标准化层
         x = x * x_mask
         return x
 
