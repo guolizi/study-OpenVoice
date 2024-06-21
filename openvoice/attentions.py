@@ -272,13 +272,13 @@ class MultiHeadAttention(nn.Module):        # 计算多头注意力
         return x
 
     def attention(self, query, key, value, mask=None):
-        # reshape [b, d, t] -> [b, n_h, t, d_k]
+        # reshape [b, d, t] -> [b, n_h, t, d_k], d=n_h*d_k
         b, d, t_s, t_t = (*key.size(), query.size(2))
         query = query.view(b, self.n_heads, self.k_channels, t_t).transpose(2, 3)
         key = key.view(b, self.n_heads, self.k_channels, t_s).transpose(2, 3)
         value = value.view(b, self.n_heads, self.k_channels, t_s).transpose(2, 3)
 
-        scores = torch.matmul(query / math.sqrt(self.k_channels), key.transpose(-2, -1))
+        scores = torch.matmul(query / math.sqrt(self.k_channels), key.transpose(-2, -1))    # [b, n_h, t, t]
         if self.window_size is not None:
             assert (
                 t_s == t_t
@@ -286,8 +286,8 @@ class MultiHeadAttention(nn.Module):        # 计算多头注意力
             key_relative_embeddings = self._get_relative_embeddings(self.emb_rel_k, t_s)
             rel_logits = self._matmul_with_relative_keys(
                 query / math.sqrt(self.k_channels), key_relative_embeddings
-            )
-            scores_local = self._relative_position_to_absolute_position(rel_logits)
+            )    # 算完后是[b, n_h, t, 2*t-1]
+            scores_local = self._relative_position_to_absolute_position(rel_logits)    # [b, n_h, t, t]
             scores = scores + scores_local
         if self.proximal_bias:
             assert t_s == t_t, "Proximal bias is only available for self-attention."
@@ -365,10 +365,10 @@ class MultiHeadAttention(nn.Module):        # 计算多头注意力
         """
         batch, heads, length, _ = x.size()
         # Concat columns of pad to shift from relative to absolute indexing.
-        x = F.pad(x, commons.convert_pad_shape([[0, 0], [0, 0], [0, 0], [0, 1]]))
+        x = F.pad(x, commons.convert_pad_shape([[0, 0], [0, 0], [0, 0], [0, 1]]))    # 最后加一维变成2l
 
         # Concat extra elements so to add up to shape (len+1, 2*len-1).
-        x_flat = x.view([batch, heads, length * 2 * length])
+        x_flat = x.view([batch, heads, length * 2 * length])    # 将第2维和第3维合并成1维
         x_flat = F.pad(
             x_flat, commons.convert_pad_shape([[0, 0], [0, 0], [0, length - 1]])
         )
