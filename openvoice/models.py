@@ -480,8 +480,8 @@ class SynthesizerTrn(nn.Module):
             + self.dp(x, x_mask, g=g) * (1 - sdp_ratio)
 
         w = torch.exp(logw) * x_mask * length_scale
-        w_ceil = torch.ceil(w)
-        y_lengths = torch.clamp_min(torch.sum(w_ceil, [1, 2]), 1).long()
+        w_ceil = torch.ceil(w)		# 向上取整
+        y_lengths = torch.clamp_min(torch.sum(w_ceil, [1, 2]), 1).long()	# w_ceil的求和，w代表什么？
         y_mask = torch.unsqueeze(commons.sequence_mask(y_lengths, None), 1).to(x_mask.dtype)
         attn_mask = torch.unsqueeze(x_mask, 2) * torch.unsqueeze(y_mask, -1)
         attn = commons.generate_path(w_ceil, attn_mask)
