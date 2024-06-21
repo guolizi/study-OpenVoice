@@ -110,9 +110,9 @@ class Encoder(nn.Module):
                 g = g.transpose(1, 2)
                 x = x + g
                 x = x * x_mask
-            y = self.attn_layers[i](x, x, attn_mask)
+            y = self.attn_layers[i](x, x, attn_mask)        # 注意力层
             y = self.drop(y)
-            x = self.norm_layers_1[i](x + y)
+            x = self.norm_layers_1[i](x + y)    # 标准化
 
             y = self.ffn_layers[i](x, x_mask)
             y = self.drop(y)
